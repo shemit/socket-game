@@ -3,7 +3,7 @@
 // This abstracts input controls from the game mechanics themselves
 
 function Action() { }
-Action.prototype.execute = function() {
+  Action.prototype.execute = function() {
 }
 
 function Up() { Action.call(this); }
