@@ -1,0 +1,17 @@
+{
+  "name": "socket-game",
+  "version": "0.0.1",
+  "author": "Shem Nguyen <shemit@gmail.com>",
+  "description": "Just a barebones MO game engine so far.",
+  "contributors": [
+    {
+      "name": "Shem Nguyen",
+      "email": "shemit@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "express": "3.2.4",
+    "socket.io": "0.9.14",
+    "jade": "*"
+  }
+}
