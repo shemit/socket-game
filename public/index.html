@@ -23,7 +23,7 @@ $(document).ready(function() {
   var usr = "";
   var player;
   var players = new Array();
-  var socket = io.connect("localhost");
+  var socket = io.connect("http://socket-game.aws.af.cm");
   var currentlyPressedKeys = {};
 
   document.onkeydown = handleKeyDown;

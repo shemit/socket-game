@@ -7,58 +7,30 @@ server.listen(80);
 
 app.use(express.static(__dirname + '/public'));
 
-function Player(x, y, z, username){
-  this.username = username;
-  this.x = x;
-  this.y = y;
-  this.z = z;
-}
-
-var players = new Array();
-
-// Do something when connected
-io.sockets.on('connection', function (socket) {
-
-  socket.on("populate", function(data) {
-    players[data.username] = new Player(0,0,0, data["username"]);
-    for (key in players) {
-      var p = players[key];
-      socket.emit("populate", {username: p.username,
-                               x: p.x, y: p.y, z: p.z });
-    }
-  });
-
-  socket.on("updatex", function(data) {
-    players[data.username].x = data.x;
-  }); 
-
-  socket.on("updatey", function(data) {
-    players[data.username].y = data.y;
-  }); 
-
-  socket.on("updatez", function(data) {
-    players[data.username].z = data.z;
-  }); 
-
-  var tick = setInterval(serverUpdate, 50);
-
-  socket.on("update", function(data) {
-    for (key in players) {
-      if (data.username != key) {
-        socket.emit("update", {username: key,
-                               x: players[key].x,
-                               y: players[key].y,
-                               z: players[key].z});
-      }
-    }
-  });
-
-  function serverUpdate() {
-    for (key in players) {
-      socket.emit("update", {username: key,
-                             x: players[key].x,
-                             y: players[key].y,
-                             z: players[key].z});
-    }
-  }
+app.configure(function() {
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
+  app.use(app.router);
+  app.use(express.static(__dirname + '/public'));
 });
+
+app.get("/", function(req, res) {
+  res.render('index',
+    { "title": "Such a Fun Game!",
+    });
+});
+app.post("/user", function(req, res) {
+  res.send("user is: " );
+});
+app.get("/register", function(req, res) {
+  res.send("registering" + req.param("name"));
+});
+app.get("/game", function(req, res) {
+  res.send("Some game");
+})
+
+// Websockets for the game here.
+var game = io
+  .of('/game')
+  .on('connection', function(socket) {
+  });
