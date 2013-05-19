@@ -14,3 +14,5 @@ sudo node server.js
 ```
 
 Make sure that port 80 isn't occupied by Apache or any other server. This will launch the server on port 80. To test, open up two browser instances and put in two different names into the text field. Voila! You should have two browser windows talking to your node server and updating the location of two rectangles.
+
+
