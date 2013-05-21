@@ -42,6 +42,9 @@ app.get("/user/:id/edit", function(req, res) {
   var id = req.params.id;
   res.render("user/edit", {"title": "User Index"});
 });
+app.put("/user/:id/put", function(req, res) {
+  var id = req.params.id;
+});
 // TODO: Store all of the user information with salted information in the db
 //       Get this working as soon as possible, then stress test and security
 //       check with edge/corner cases.
