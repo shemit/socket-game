@@ -3,7 +3,9 @@ var express = require('express')
   , server = require('http').createServer(app)
   , io = require('socket.io').listen(server);
 
+var Model = require('./models/model');
 var User = require('./models/user.model');
+
 
 server.listen(80);
 
@@ -35,6 +37,7 @@ app.get("/user", function(req, res) {
 app.get("/user/:id", function(req, res) {
   // get user based off of the ID here
   var id = req.params.id;
+  console.log(Model.DB.find('user', null, null));
   res.render("user/", {"title": "User Index"});
 });
 app.get("/user/:id/edit", function(req, res) {
@@ -44,6 +47,7 @@ app.get("/user/:id/edit", function(req, res) {
 });
 app.put("/user/:id/put", function(req, res) {
   var id = req.params.id;
+  res.redirect("/user/" + id);
 });
 // TODO: Store all of the user information with salted information in the db
 //       Get this working as soon as possible, then stress test and security
