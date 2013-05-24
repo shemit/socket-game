@@ -1,14 +1,14 @@
 var Model = module.exports = function() {
 }
+Model.DB = require('../lib/db.js');
 
 Model.prototype.save = function() {
   // TODO: Not async safe; Fix this
-  this.id = Model.id++;
+  console.log("model being saved " +this.name + ", " + this.id);
   Model.DB.save(this.name, this);
 }
 
-Model.findBy = function(label, value) {
+Model.findBy = function(model, label, value) {
+  return Model.DB.find(model, label, value);
 }
 
-Model.DB = require('../lib/db.js');
-Model.id = 0;

@@ -37,13 +37,14 @@ app.get("/user", function(req, res) {
 app.get("/user/:id", function(req, res) {
   // get user based off of the ID here
   var id = req.params.id;
-  console.log(Model.DB.find('user', null, null));
-  res.render("user/", {"title": "User Index"});
+  var user = Model.findBy('user', 'id', id);
+  res.render("user/show", {"title": "User Index", "user": user });
 });
 app.get("/user/:id/edit", function(req, res) {
   // get user based off of the id here
   var id = req.params.id;
-  res.render("user/edit", {"title": "User Index"});
+  var user = Model.findBy('user', 'id', id);
+  res.render("user/edit", {"title": "User Index", "user": user});
 });
 app.put("/user/:id/put", function(req, res) {
   var id = req.params.id;
