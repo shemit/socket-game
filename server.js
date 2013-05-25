@@ -15,7 +15,8 @@ app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
-  app.use(express.static(__dirname + '/public'));
+ // app.use(express.methodOverride());
+ // app.use(express.static(__dirname + '/public'));
 });
 
 app.get("/", function(req, res) {
@@ -34,6 +35,18 @@ app.get("/user/new", function(req, res) {
 app.get("/user", function(req, res) {
   res.render("user/index", {"title": "User Index"});
 });
+app.post("/user/:id", function(req, res) {
+  console.log("inside of user put!!!");
+  var id = req.params.id;
+  var user = Model.findBy('user', 'id', id);
+  console.log("user found to be put was: ");
+  console.log(user);
+  user.email = req.param('email', null);
+  console.log("user email on edit: " + user.email);
+  user.password = req.param('password', null);
+  user.save();
+  res.redirect("/user/" + user.id);
+});
 app.get("/user/:id", function(req, res) {
   // get user based off of the ID here
   var id = req.params.id;
@@ -45,10 +58,6 @@ app.get("/user/:id/edit", function(req, res) {
   var id = req.params.id;
   var user = Model.findBy('user', 'id', id);
   res.render("user/edit", {"title": "User Index", "user": user});
-});
-app.put("/user/:id/put", function(req, res) {
-  var id = req.params.id;
-  res.redirect("/user/" + id);
 });
 // TODO: Store all of the user information with salted information in the db
 //       Get this working as soon as possible, then stress test and security

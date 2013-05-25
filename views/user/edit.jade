@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   div#new_user
-    form(method='put',action='/user/edit')  
+    form(method='post',action='/user/#{user.id}')  
       label(for='email') Email:
       input(type='text',name='email',id='email',value=user.email)
       label(for='password') Password:

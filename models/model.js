@@ -11,4 +11,3 @@ Model.prototype.save = function() {
 Model.findBy = function(model, label, value) {
   return Model.DB.find(model, label, value);
 }
-
