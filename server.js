@@ -36,11 +36,8 @@ app.get("/user", function(req, res) {
   res.render("user/index", {"title": "User Index"});
 });
 app.post("/user/:id", function(req, res) {
-  console.log("inside of user put!!!");
   var id = req.params.id;
   var user = Model.findBy('user', 'id', id);
-  console.log("user found to be put was: ");
-  console.log(user);
   user.email = req.param('email', null);
   console.log("user email on edit: " + user.email);
   user.password = req.param('password', null);
@@ -59,6 +56,7 @@ app.get("/user/:id/edit", function(req, res) {
   var user = Model.findBy('user', 'id', id);
   res.render("user/edit", {"title": "User Index", "user": user});
 });
+
 // TODO: Store all of the user information with salted information in the db
 //       Get this working as soon as possible, then stress test and security
 //       check with edge/corner cases.
@@ -74,6 +72,25 @@ app.get("/register", function(req, res) {
 });
 // ==================== End User Routes ======================== //
 
+
+// ==================== Begin Session Routes ====================== //
+app.get("/session/new", function(req, res) {
+  res.render("session/new", {"title": "Sign In"});
+});
+app.post("/session", function(req, res) {
+  var email = req.param('email', null);
+  var password = req.param('password', null);
+  var user = Model.findBy('user', 'email', email);
+  var password = Model.findBy('user', 'password', password);
+  // TODO: Check to see that both user and the password exist.
+  res.redirect("/game");
+});
+app.delete("/session", function(req, res) {
+});
+// ==================== End Session Routes ======================== //
+
+
+// ==================== Begin Game Routes ====================== //
 app.get("/game", function(req, res) {
   res.send("Some game");
 });
