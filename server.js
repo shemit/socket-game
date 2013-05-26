@@ -15,7 +15,7 @@ app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
- // app.use(express.methodOverride());
+  app.use(express.methodOverride());
  // app.use(express.static(__dirname + '/public'));
 });
 
@@ -35,7 +35,7 @@ app.get("/user/new", function(req, res) {
 app.get("/user", function(req, res) {
   res.render("user/index", {"title": "User Index"});
 });
-app.post("/user/:id", function(req, res) {
+app.put("/user/:id", function(req, res) {
   var id = req.params.id;
   var user = Model.findBy('user', 'id', id);
   user.email = req.param('email', null);
