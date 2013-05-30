@@ -85,7 +85,8 @@ app.post("/session", function(req, res) {
   var user = Model.findBy('user', 'email', email);
   var password = Model.findBy('user', 'password', password);
   if (user === password) {
-    // TODO: Sign in here.
+    res.cookie('remember_token', user.rememberToken, 
+      { expires: new Date(Date.now() + 2 * 604800000), path: '/' });
   }
   res.redirect("/game");
 });
