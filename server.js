@@ -8,8 +8,6 @@ var User = require('./models/user.model');
 
 server.listen(80);
 
-app.use(express.static(__dirname + '/public'));
-
 app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
@@ -17,7 +15,7 @@ app.configure(function() {
   app.use(express.methodOverride());
   app.use(express.cookieParser());
   app.use(express.session({secret:'s0m3k1nd0fst00p1ds3cr3t'}));
- // app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/public'));
 });
 
 app.get("/", function(req, res) {
@@ -79,12 +77,16 @@ app.get("/register", function(req, res) {
 app.get("/session/new", function(req, res) {
   res.render("session/new", {"title": "Sign In"});
 });
+app.get("/session/delete", function(req, res) {
+  res.clearCookie('remember_token');
+  res.redirect("/");
+});
 app.post("/session", function(req, res) {
   var email = req.param('email', null);
   var password = req.param('password', null);
   var user = Model.findBy('user', 'email', email);
   var password = Model.findBy('user', 'password', password);
-  if (user === password) {
+  if (user.email === password.email) {
     res.cookie('remember_token', user.rememberToken, 
       { expires: new Date(Date.now() + 2 * 604800000), path: '/' });
   }
