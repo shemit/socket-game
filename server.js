@@ -47,6 +47,10 @@ app.get("/user/:id", function(req, res) {
   // get user based off of the ID here
   var id = req.params.id;
   var user = Model.findBy('user', 'id', id);
+  console.log(user);
+  if (!user.email) {
+    user.email = "";
+  }
   res.render("user/show", {"title": "User Index", "user": user });
 });
 app.get("/user/:id/edit", function(req, res) {
@@ -78,7 +82,7 @@ app.get("/session/new", function(req, res) {
   res.render("session/new", {"title": "Sign In"});
 });
 app.get("/session/delete", function(req, res) {
-  res.clearCookie('remember_token');
+  res.clearCookie('rememberToken');
   res.redirect("/");
 });
 app.post("/session", function(req, res) {
@@ -87,7 +91,7 @@ app.post("/session", function(req, res) {
   var user = Model.findBy('user', 'email', email);
   var password = Model.findBy('user', 'password', password);
   if (user.email === password.email) {
-    res.cookie('remember_token', user.rememberToken, 
+    res.cookie('rememberToken', user.rememberToken, 
       { expires: new Date(Date.now() + 2 * 604800000), path: '/' });
   }
   res.redirect("/game");
@@ -98,12 +102,31 @@ app.delete("/session", function(req, res) {
 
 
 // ==================== Begin Game Routes ====================== //
+// TODO: Link up the remember token with the session_id to make this
+//       super secure. This will force a hacker to grab both the session_id
+//       as well as the remember_token to steal an account
 app.get("/game", function(req, res) {
-  res.send("Some game");
+  var rememberToken = req.cookies.rememberToken;
+  var user = Model.findBy('user', 'rememberToken', rememberToken);
+  if (user == null) {
+    res.redirect("/session/new");
+    return;
+  }
+  res.render("game/index", {"title": "Game", "user": user});
 });
 
 // Websockets for the game here.
-var game = io
-  .of('/game')
-  .on('connection', function(socket) {
+var game = io.on('connection', function(socket) {
+  socket.on("up", function(data) {
+    console.log("up: " + data);
   });
+  socket.on("down", function(data) {
+    console.log("down: " + data);
+  });
+  socket.on("left", function(data) {
+    console.log("left: " + data);
+  });
+  socket.on("right", function(data) {
+    console.log("right: " + data);
+  });
+});

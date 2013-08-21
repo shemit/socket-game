@@ -2,6 +2,9 @@
 // Can also act as interface between AI and Player
 
 function Controller() {
+
+  var _this = this;
+
   this.keyMap = {
     38 : new Up(),
     87 : new Up(),
@@ -12,12 +15,13 @@ function Controller() {
     39 : new Right(),
     68 : new Right(),
   }
-}
 
-Controller.prototype.handleInput = function(pressedKeys) {
-  for (key in pressedKeys) {
-    if (pressedKeys[key] && this.keyMap[key]) {
-      this.keyMap[key].execute();
+  this.handleInput = function(pressedKeys) {
+    for (key in pressedKeys) {
+      if (pressedKeys[key] && this.keyMap[key]) {
+        this.keyMap[key].execute();
+      }
     }
   }
+
 }
